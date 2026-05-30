@@ -8,6 +8,14 @@ pub enum ErrorCode {
     InvalidName,
     #[msg("Unauthorized: Only the maker can delist this item)")]
     Unauthorized,
+    #[msg("Unauthorized: Only the admin can perform this action")]
+    UnauthorizedAdmin,
+    #[msg("Invalid offer: amount must be non-zero and positive")]
+    InvalidOfferAmount,
+    #[msg("Unauthorized: Only the offer maker can cancel this offer")]
+    UnauthorizedOfferCancellation,
+    #[msg("Offer asset mismatch")]
+    OfferAssetMismatch,
     #[msg("Payment mint mismatch for this listing")]
     MintMismatch,
 }

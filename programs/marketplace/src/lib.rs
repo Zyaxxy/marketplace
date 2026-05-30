@@ -35,5 +35,22 @@ pub mod marketplace {
     pub fn delist(ctx: Context<Delist>) -> Result<()> {
         ctx.accounts.delist()
     }
+
+    pub fn make_offer(ctx: Context<MakeOffer>, amount: u64) -> Result<()> {
+        ctx.accounts.create_offer(amount, &ctx.bumps)
+    }
+
+    pub fn accept_offer(ctx: Context<AcceptOffer>) -> Result<()> {
+        ctx.accounts.accept()
+    }
+
+    pub fn cancel_offer(ctx: Context<CancelOffer>) -> Result<()> {
+        ctx.accounts.cancel()
+    }
+
+    pub fn withdraw_fee(ctx: Context<WithdrawFee>, amount: u64) -> Result<()> {
+        ctx.accounts.withdraw_sol(amount)?;
+        ctx.accounts.withdraw_token(amount)
+    }
 }
 
