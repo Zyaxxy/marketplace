@@ -1,0 +1,11 @@
+use anchor_lang::prelude::*;
+
+#[error_code]
+pub enum ErrorCode {
+    #[msg("Invalid fee: Fee must be less than or equal to 10000 basis points)")]
+    InvalidFee,
+    #[msg("Invalid name: Name must be less than or equal to 32 characters)")]
+    InvalidName,
+    #[msg("Unauthorized: Only the maker can delist this item)")]
+    Unauthorized,
+}
