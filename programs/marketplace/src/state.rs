@@ -17,6 +17,7 @@ pub struct Marketplace{
 pub struct Listing{
     pub maker: Pubkey,
     pub asset: Pubkey,
+    pub payment_mint: Pubkey,
     pub price: u64,
     pub bump: u8
 }

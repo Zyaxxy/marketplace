@@ -25,4 +25,4 @@ anchor-spl = "0.31.1"
 mpl-core = { version = "0.11.2" , features = ["anchor"]}
 
 [lints.rust]
-unexpected_cfs = { level = "warn" , check-cfg = ['cfg(target_os , values("solana"))']}
+unexpected_cfgs = { level = "warn", check-cfg = ['cfg(target_os, values("solana"))', 'cfg(feature, values("custom-panic", "custom-heap"))'] }

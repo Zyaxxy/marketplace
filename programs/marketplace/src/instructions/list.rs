@@ -1,8 +1,10 @@
 use anchor_lang::prelude::*;
 use mpl_core::{instructions:: TransferV1CpiBuilder ,ID as MPL_CORE_ID};
+use anchor_spl::token_interface::{ Mint, TokenInterface};
 use crate::{state::*};
 
 #[derive(Accounts)]
+
 pub struct List<'info> {
     #[account(mut)]
     pub maker: Signer<'info>,
@@ -14,18 +16,24 @@ pub struct List<'info> {
     pub collection: Option<UncheckedAccount<'info>>,
 
     #[account(
-        init,
+        mint::token_program = token_program,
+    )]
+    pub payment_mint: Box<InterfaceAccount<'info, Mint>>,
+
+    #[account(
+        init,   
         payer = maker,
         seeds = [b"listing", asset.key().as_ref()],
         bump,
         space = Listing::DISCRIMINATOR.len() + Listing::INIT_SPACE
     )]
-    pub listing: Account<'info, Listing>,
+    pub listing: Box<Account<'info, Listing>>,
     ///CHECK: validated in cpi by mplCore
     #[account(
         address = MPL_CORE_ID,
     )]
     pub mpl_core_program: UncheckedAccount<'info,>,
+    pub token_program: Interface<'info, TokenInterface>,
     pub system_program: Program<'info, System>,
 }
 
@@ -34,6 +42,7 @@ impl <'info> List <'info>{
         self.listing.set_inner(Listing { 
             maker: self.maker.key(), 
             asset: self.asset.key(), 
+            payment_mint: self.payment_mint.key(),
             price, 
             bump: bumps.listing 
         });

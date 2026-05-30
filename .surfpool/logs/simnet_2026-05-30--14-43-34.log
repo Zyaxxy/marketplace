@@ -1,0 +1,47 @@
+[2026-05-30--14-43-34 INFO actix_server::builder] starting 5 workers
+[2026-05-30--14-43-34 INFO actix_server::server] Tokio runtime found; starting in existing Tokio runtime
+[2026-05-30--14-43-34 INFO actix_server::server] starting service: "actix-web-service-127.0.0.1:18488", workers: 5, listening on: 127.0.0.1:18488
+[2026-05-30--14-43-35 INFO parity_ws] Listening for new connections on 127.0.0.1:8900.
+[2026-05-30--14-43-36 INFO txtx::svm::deploy_program] [Recovery Instructions] - An ephemeral authority account will be created and funded to write to the buffer account.
+[2026-05-30--14-43-36 INFO txtx::svm::deploy_program] [Recovery Instructions] - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2026-05-30--14-43-36 INFO txtx::svm::deploy_program] [Recovery Instructions] - Ephemeral authority public key: Gx4xyZs373eZgy244VpZEQbD6hWGVnNczn4hrNc9wRny
+[2026-05-30--14-43-36 INFO txtx::svm::deploy_program] [Recovery Instructions] - Ephemeral authority secret key: [234, 255, 199, 14, 150, 241, 208, 160, 248, 210, 188, 253, 119, 171, 227, 63, 5, 211, 134, 36, 186, 151, 110, 176, 79, 59, 226, 151, 185, 206, 103, 172, 236, 250, 187, 83, 34, 13, 29, 70, 237, 243, 48, 242, 199, 25, 127, 240, 15, 35, 207, 211, 1, 109, 223, 131, 214, 39, 107, 222, 165, 1, 111, 90]
+[2026-05-30--14-43-36 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2026-05-30--14-43-36 INFO txtx::svm::deploy_program] [Recovery Instructions] - Creating program buffer account at pubkey 6EmCFLt3AiEu1QhTqEWxatYBCQJvVHAwXatqB1p57ZLq
+[2026-05-30--14-43-36 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2026-05-30--14-43-43 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2026-05-30--14-43-44 INFO txtx::svm::deploy_program] Program Created - Program 6ghUFmM6K4x1y3nq4WbCwtAZFCe6mip2LNbiukUjV9g3 has been deployed
+[2026-05-30--14-43-45 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2026-05-30--14-43-51 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58048.
+[2026-05-30--14-43-52 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58052.
+[2026-05-30--14-43-52 WARN surfpool_core::rpc::ws] Signature subscription channel closed for sub id Number(1)
+[2026-05-30--14-43-54 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:58058.
+[2026-05-30--14-45-35 INFO txtx::svm::deploy_program] [Recovery Instructions] - An ephemeral authority account will be created and funded to write to the buffer account.
+[2026-05-30--14-45-35 INFO txtx::svm::deploy_program] [Recovery Instructions] - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2026-05-30--14-45-35 INFO txtx::svm::deploy_program] [Recovery Instructions] - Ephemeral authority public key: 2XdEcYQi426GK3snvn4uUEHXn6c9jhMf9q3x2Ee3YR2A
+[2026-05-30--14-45-35 INFO txtx::svm::deploy_program] [Recovery Instructions] - Ephemeral authority secret key: [215, 134, 100, 115, 187, 91, 255, 170, 185, 221, 113, 219, 66, 215, 43, 160, 190, 97, 225, 86, 83, 102, 210, 103, 21, 27, 229, 25, 72, 44, 129, 64, 22, 180, 20, 247, 238, 43, 197, 16, 54, 204, 96, 249, 166, 202, 64, 3, 213, 233, 3, 154, 202, 56, 46, 227, 155, 40, 6, 68, 41, 113, 167, 123]
+[2026-05-30--14-45-35 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2026-05-30--14-45-35 INFO txtx::svm::deploy_program] [Recovery Instructions] - Creating program buffer account at pubkey CzEzvM7oC5mfzARj4fX3c53HSD9eLkwN3QyTfNiCRbQe
+[2026-05-30--14-45-37 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36342.
+[2026-05-30--14-45-38 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36356.
+[2026-05-30--14-45-38 WARN surfpool_core::rpc::ws] Signature subscription channel closed for sub id Number(14)
+[2026-05-30--14-45-39 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:36364.
+[2026-05-30--14-45-42 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2026-05-30--14-45-43 INFO txtx::svm::deploy_program] Buffer Authority Transferred - Buffer authority has been transferred to authority signer
+[2026-05-30--14-45-43 INFO txtx::svm::deploy_program] Program Upgraded - Program 6ghUFmM6K4x1y3nq4WbCwtAZFCe6mip2LNbiukUjV9g3 has been upgraded
+[2026-05-30--14-45-44 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2026-05-30--14-45-44 INFO txtx::svm::deploy_program] [Recovery Instructions] - An ephemeral authority account will be created and funded to write to the buffer account.
+[2026-05-30--14-45-44 INFO txtx::svm::deploy_program] [Recovery Instructions] - Please save the following information in case the deployment fails and the account needs to be recovered:
+[2026-05-30--14-45-44 INFO txtx::svm::deploy_program] [Recovery Instructions] - Ephemeral authority public key: 9SCRUTe5CvKaTMHhKTdnXaQ86KQAJ95brCeuM4KpiN1Z
+[2026-05-30--14-45-44 INFO txtx::svm::deploy_program] [Recovery Instructions] - Ephemeral authority secret key: [39, 138, 218, 76, 139, 32, 51, 167, 210, 160, 112, 95, 117, 2, 125, 102, 50, 57, 192, 59, 7, 105, 114, 24, 75, 212, 54, 152, 230, 199, 188, 38, 125, 81, 238, 52, 55, 218, 241, 223, 109, 171, 27, 209, 11, 168, 214, 64, 5, 75, 68, 77, 91, 72, 206, 17, 103, 201, 70, 49, 111, 99, 158, 108]
+[2026-05-30--14-45-45 INFO txtx::svm::deploy_program] Account Created - Ephemeral authority account created and funded to write to buffer
+[2026-05-30--14-45-45 INFO txtx::svm::deploy_program] [Recovery Instructions] - Creating program buffer account at pubkey 5z1ytb5NekyPKPwrhEY1xuf9WDPdAy4DaiNqcX4XqGK9
+[2026-05-30--14-45-45 INFO txtx::svm::deploy_program] Account Created - Program buffer account created
+[2026-05-30--14-45-51 INFO txtx::svm::deploy_program] Buffer Ready - Writing to buffer account is complete
+[2026-05-30--14-45-51 INFO txtx::svm::deploy_program] Buffer Authority Transferred - Buffer authority has been transferred to authority signer
+[2026-05-30--14-45-52 INFO txtx::svm::deploy_program] Program Upgraded - Program 6ghUFmM6K4x1y3nq4WbCwtAZFCe6mip2LNbiukUjV9g3 has been upgraded
+[2026-05-30--14-45-52 INFO txtx::svm::deploy_program] Complete - Ephemeral authority account closed and leftover funds returned to payer
+[2026-05-30--14-46-25 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42646.
+[2026-05-30--14-46-26 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42658.
+[2026-05-30--14-46-27 WARN surfpool_core::rpc::ws] Signature subscription channel closed for sub id Number(27)
+[2026-05-30--14-46-28 INFO parity_ws::io] Accepted a new tcp connection from 127.0.0.1:42670.

@@ -1,3 +1,4 @@
+#![allow(deprecated)]
 use anchor_lang::prelude::*;
 pub mod state;
 pub mod instructions;
@@ -21,6 +22,12 @@ pub mod marketplace {
 
     pub fn buy(ctx: Context<Buy>) -> Result<()> {
         ctx.accounts.send_sol()?;
+        ctx.accounts.recieve_nft()?;
+        ctx.accounts.distribute_rewards()
+    }
+
+    pub fn buy_with_token(ctx: Context<BuyWithToken>) -> Result<()> {
+        ctx.accounts.send_tokens()?;
         ctx.accounts.recieve_nft()?;
         ctx.accounts.distribute_rewards()
     }

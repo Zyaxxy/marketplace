@@ -8,4 +8,6 @@ pub enum ErrorCode {
     InvalidName,
     #[msg("Unauthorized: Only the maker can delist this item)")]
     Unauthorized,
+    #[msg("Payment mint mismatch for this listing")]
+    MintMismatch,
 }

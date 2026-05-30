@@ -1,18 +1,21 @@
-use anchor_lang::{prelude::*, system_program::transfer};
+use anchor_lang::prelude::*;
 use mpl_core::{instructions:: TransferV1CpiBuilder ,ID as MPL_CORE_ID};
-use crate::{state::*};
-use crate::error::ErrorCode;
-use anchor_spl::{associated_token::AssociatedToken, token::{mint_to, spl_token, MintTo}, token_interface::{Mint, TokenAccount, TokenInterface}};
+use anchor_spl::{
+    associated_token::AssociatedToken,
+    token::{mint_to, MintTo},
+    token_interface::{transfer_checked, Mint, TokenAccount, TokenInterface, TransferChecked},
+};
+use crate::{state::*, error::ErrorCode};
 
 #[derive(Accounts)]
-pub struct Buy<'info> {
+pub struct BuyWithToken<'info> {
     #[account(mut)]
     pub taker: Signer<'info>,
     ///CHECK: validated in cpi by mplCore
-    #[account(mut)] 
+    #[account(mut)]
     pub maker: UncheckedAccount<'info>,
     ///CHECK: validated in cpi by mplCore
-    #[account(mut)] 
+    #[account(mut)]
     pub asset: UncheckedAccount<'info>,
     ///CHECK: validated in cpi
     #[account(mut)]
@@ -25,19 +28,44 @@ pub struct Buy<'info> {
 
     #[account(
         mut,
-        close = maker,  
+        close = maker,
         seeds = [b"listing", listing.asset.key().as_ref()],
         bump = listing.bump,
         has_one = maker,
-        has_one = asset
+        has_one = asset,
+        has_one = payment_mint
     )]
     pub listing: Box<Account<'info, Listing>>,
+
+    pub payment_mint: Box<InterfaceAccount<'info, Mint>>,
+
     #[account(
         mut,
-        seeds = [b"treasury", marketplace.key().as_ref()],
-        bump
+        associated_token::mint = payment_mint,
+        associated_token::authority = taker,
+        associated_token::token_program = token_program
     )]
-    pub treasury: SystemAccount<'info>,
+    pub taker_payment_ata: Box<InterfaceAccount<'info, TokenAccount>>,
+
+    #[account(
+        mut,
+        associated_token::mint = payment_mint,
+        associated_token::authority = maker,
+        associated_token::token_program = token_program
+    )]
+    pub maker_payment_ata: Box<InterfaceAccount<'info, TokenAccount>>,
+
+    #[account(
+        init_if_needed,
+        payer = taker,
+        seeds = [b"treasury", marketplace.key().as_ref(), payment_mint.key().as_ref()],
+        bump,
+        token::mint = payment_mint,
+        token::authority = marketplace,
+        token::token_program = token_program
+    )]
+    pub treasury_payment_account: Box<InterfaceAccount<'info, TokenAccount>>,
+
     #[account(
         mut,
         seeds = [b"rewards", marketplace.key().as_ref()],
@@ -61,55 +89,57 @@ pub struct Buy<'info> {
     pub mpl_core_program: UncheckedAccount<'info>,
 
     pub associated_token_program: Program<'info, AssociatedToken>,
-    
+
     pub token_program: Interface<'info, TokenInterface>,
 
     pub system_program: Program<'info, System>,
 }
 
-impl <'info> Buy <'info>{
-
-    pub fn send_sol(&mut self)->Result<()>{
+impl <'info> BuyWithToken <'info> {
+    pub fn send_tokens(&mut self) -> Result<()> {
         require!(
-            self.listing.payment_mint == spl_token::native_mint::id(),
+            self.listing.payment_mint == self.payment_mint.key(),
             ErrorCode::MintMismatch
         );
-        // Transfer payment from taker to maker (minus marketplace fee)
+
         let price = self.listing.price;
         let fee = (price as u128)
-        .checked_mul(self.marketplace.fee as u128)
-        .unwrap()
-        .checked_div(10000)
-        .unwrap() as u64;
-        
+            .checked_mul(self.marketplace.fee as u128)
+            .unwrap()
+            .checked_div(10000)
+            .unwrap() as u64;
         let maker_amount = price.checked_sub(fee).unwrap();
+        let decimals = self.payment_mint.decimals;
 
-        // Transfer lamports from taker to maker
-        let price_ctx = CpiContext::new(
-            self.system_program.to_account_info(),
-            anchor_lang::system_program::Transfer {
-                from: self.taker.to_account_info(),
-                to: self.maker.to_account_info(),
+        let maker_ctx = CpiContext::new(
+            self.token_program.to_account_info(),
+            TransferChecked {
+                from: self.taker_payment_ata.to_account_info(),
+                mint: self.payment_mint.to_account_info(),
+                to: self.maker_payment_ata.to_account_info(),
+                authority: self.taker.to_account_info(),
             },
         );
-        transfer(price_ctx, maker_amount)?;
+        transfer_checked(maker_ctx, maker_amount, decimals)?;
 
         let fee_ctx = CpiContext::new(
-            self.system_program.to_account_info(),
-            anchor_lang::system_program::Transfer {
-                from: self.taker.to_account_info(),
-                to: self.treasury.to_account_info(),
+            self.token_program.to_account_info(),
+            TransferChecked {
+                from: self.taker_payment_ata.to_account_info(),
+                mint: self.payment_mint.to_account_info(),
+                to: self.treasury_payment_account.to_account_info(),
+                authority: self.taker.to_account_info(),
             },
         );
-        transfer(fee_ctx, fee)
-
+        transfer_checked(fee_ctx, fee, decimals)
     }
-    pub fn recieve_nft(&mut self)->Result<()>{
+
+    pub fn recieve_nft(&mut self) -> Result<()> {
         let asset_key = self.asset.key();
         let bump = self.listing.bump;
         let seed: &[&[u8]] = &[b"listing", asset_key.as_ref(), &[bump]];
         let signer_seeds = &[seed];
-        
+
         TransferV1CpiBuilder::new(
             &self.mpl_core_program.to_account_info())
             .asset(&self.asset.to_account_info())
@@ -119,17 +149,17 @@ impl <'info> Buy <'info>{
             .new_owner(&self.taker.to_account_info())
             .system_program(Some(&self.system_program.to_account_info()))
             .invoke_signed(signer_seeds)?;
-       
+
         Ok(())
     }
 
-    pub fn distribute_rewards(&mut self)->Result<()>{
+    pub fn distribute_rewards(&mut self) -> Result<()> {
         let price = self.listing.price;
         let reward_amount = (price as u128)
-        .checked_mul(100) // 1% rewards
-        .unwrap()
-        .checked_div(10000)
-        .unwrap() as u64;
+            .checked_mul(100)
+            .unwrap()
+            .checked_div(10000)
+            .unwrap() as u64;
 
         let seeds = &[
             b"marketplace".as_ref(),
